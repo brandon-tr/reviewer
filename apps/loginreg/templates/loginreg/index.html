@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>WORKS</h1>
+    <form action = "{% url 'loginreg:register' %}", method = "POST">
+        {% csrf_token %}
+    First Name<input type="text" name="first_name" value="">
+    Last Name<input type="text" name="last_name" value="">
+    Email<input type="text" name="email" value="">
+    Password<input type="text" name="password" value="">
+    Confirm Password<input type="text" name="confpassword" value="">
+    <input type="submit" name= value="Submit">
+    </form>
+    <br><br>
+    <form action="{% url 'loginreg:login' %}" method="POST">
+        {%csrf_token%}
+        <input type="text" name="email" value="">
+        <input type="text" name="password" value="">
+        <input type="submit" name="" value="Submit">
+    </form>
+    <br><br>
+    {%if messages%}
+    {%for message in messages%}
+    {{message}}
+    <br>
+    {%endfor%}
+    {%endif%}
+</body>
+</html>
