@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Cat, Like, User
+from .models import Cat, User
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 def index(request):
@@ -7,7 +7,7 @@ def index(request):
         return redirect(reverse('loginreg:index'))
     context = {
         "user": User.objects.get(id = request.session['id']).first_name,
-        "cats": Cat.objects.all().order_by("-id")
+        "cats": Cat.objects.all().order_by("-like")
     }
     return render(request,"main/index.html", context)
 def logout(request):
@@ -25,7 +25,7 @@ def addCat(request):
         return redirect(reverse("main:addCatPage"))
     return redirect(reverse("main:index"))
 def addLike(request, cat_id):
-    result = Like.objects.addLike(request.session, cat_id)
+    Cat.objects.addLike(cat_id)
     return redirect(reverse("main:index"))
 def catInfo(request, cat_id):
     if 'id' not in request.session:

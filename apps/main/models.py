@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from django.db.models import F
 from django.db import models
 from ..loginreg .models import User
 # Create your models here.
@@ -19,8 +19,8 @@ class CatManager(models.Manager):
                 user_id = User.objects.get(id = sessionData['id']).id
             )
         return result
-    def addLike(self, sessionData, cat_id):
-        Like.objects.create( cat_id = cat_id )
+    def addLike(self, cat_id):
+        Cat.objects.filter(id = cat_id).update(like = F('like') + 1)
     def UpdateInfo(self, postData, cat_id):
         Cat.objects.filter(id = cat_id).update(
         name = postData['name'],
@@ -30,8 +30,5 @@ class Cat(models.Model):
     name = models.CharField(max_length=50)
     age = models.IntegerField()
     user = models.ForeignKey(User, related_name = "user")
-    objects = CatManager()
-class Like(models.Model):
-    cat = models.ForeignKey(Cat, related_name="like")
-    created_at = models.DateTimeField(auto_now_add=True)
+    like = models.IntegerField(default = 0)
     objects = CatManager()
